@@ -1,0 +1,19 @@
+void send_to_python(){
+  filter_pot();
+  Serial.print(val_encs); 
+  Serial.print(",");
+  Serial.print(val_encp); 
+  Serial.print(",");
+  Serial.print(error); 
+  Serial.print(",");
+  Serial.print(val_encs_y); 
+  Serial.print(",");
+  Serial.print(val_tacho_cw_z);
+  Serial.print(",");
+  Serial.print(val_pid[0]);
+  Serial.print(",");
+  Serial.print(val_pid[1]);
+  Serial.print(",");
+  Serial.print(val_pid[2]);
+  Serial.println();
+}
