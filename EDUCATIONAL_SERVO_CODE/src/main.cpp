@@ -11,9 +11,11 @@
   KP    = 0 ~ 694
   KI    = 0 ~ 694
   KD    = 0 ~ 694
-  DS    = 0 ~ 694*/
+  DS    = 0 ~ 694
+*/
 
 #define SYSTEM_USE_COMMA 1 // uncomment if your computer use ',' separator
+#define SYSTEM_FILTER_TEST 1 // uncomment if testing filter
 
 #include <Arduino.h>
 #include <Wire.h>
@@ -32,6 +34,41 @@
 #define IN_L 7
 #define IN_R 6
 #define EN 5
+
+//----- kalman filter parameter -----//
+// typedef struct{
+
+//   float A = 1;
+//   float H = 1;
+//   float P = 1;
+
+//   float Q = 0.1;
+//   float R = 4;
+
+//   float x_pred = 0;
+//   float p_pred = 0;
+
+//   float x_corr = 0;
+//   float p_corr = 0;
+
+//   float x_pred_last = 0;
+//   float p_pred_last = 0;
+
+//   int x_corr_int = 0;
+
+//   float K = 0;
+
+// }kalmanParameter_t;
+
+// //----- define low pass parameter -----//
+// typedef struct{
+
+//   float input = 0;
+//   float coefficient = 0.70;
+//   float lastData = 0;
+//   float filter = 0; 
+
+// }lowPassParameter_t;
 
 //----- define PID parameter -----//
 typedef struct
@@ -85,13 +122,18 @@ typedef struct
   float KD = 0;
   float DS = 0;
 
+  float lastKD = 0;// using last data to sort out error
+
 } ParsingVariable_t;
 
 //----- call function -----//
 PIDParameters_t parameter;
 LiquidCrystal_I2C lcd(0x27, 20, 4);
-MovingAverageParameters_t MA;
 ParsingVariable_t parsing;
+
+MovingAverageParameters_t MA;
+// kalmanParameter_t kalman;
+// lowPassParameter_t lowpass;
 
 //----- define loop period -----//
 unsigned long t = 0;
@@ -100,7 +142,6 @@ uint8_t loopPeriod = 50; // loop period is 50ms
 //----- map float -----//
 float mapFloat(float x, float inMin, float inMax, float outMin, float outMax)
 {
-
   return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
@@ -117,6 +158,7 @@ float movingAverageFilter(uint8_t analogPin, int N)
 
   return MA.average;
 }
+
 
 void setup()
 {
@@ -137,38 +179,43 @@ void setup()
 void loop()
 {
 
-  if(Serial.available() > 0)
-  {
-
-    READ_DATA_UNTIL('\n');
-    data.replace(',', '.');
-    parseString();
-
-    parsing.mode = DATA_STR(0).toFloat();
-
-    parsing.setPoint = DATA_STR(1).toFloat();
-    parsing.KP = DATA_STR(2).toFloat();
-    parsing.KI = DATA_STR(3).toFloat();
-    parsing.KD = DATA_STR(4).toFloat();
-    parsing.DS = DATA_STR(5).toFloat();
-
-    Serial.flush();
-
-  }
-
   if (millis() - t > loopPeriod)
   {
 
     t += loopPeriod;
 
+    if(Serial.available() > 0)
+    {
+
+      READ_DATA_UNTIL('\n');
+      data.replace(',', '.');
+      parseString();
+
+      parsing.mode = DATA_STR(0).toFloat();
+
+      parsing.setPoint = DATA_STR(1).toFloat();
+      parsing.KP = DATA_STR(2).toFloat();
+      parsing.KI = DATA_STR(3).toFloat();
+      parsing.KD = DATA_STR(4).toFloat();
+      parsing.DS = DATA_STR(5).toFloat();
+
+      if(parsing.KD == parsing.setPoint)
+        parsing.KD = parsing.lastKD;
+      
+      parsing.lastKD = parsing.KD;
+
+      // Serial.flush();
+
+    }
+
     if (parsing.mode == 0)
     {
-      parameter.setPoint = map(analogRead(SETPOINT_PIN), 0, 694, 0, 1023);
+      parameter.setPoint = map(movingAverageFilter(SETPOINT_PIN,20), 0, 694, 0, 1023);
       constrain(parameter.setPoint, 0, 1023);
-      parameter.KP = mapFloat(analogRead(KP_PIN), 0, 694, 0, 5);
-      parameter.KI = mapFloat(analogRead(KI_PIN), 0, 694, 0, 1);
-      parameter.KD = mapFloat(analogRead(KD_PIN), 0, 694, 0, 10);
-      parameter.DS = map(analogRead(DS_PIN), 0, 694, 25, 150);
+      parameter.KP = mapFloat(movingAverageFilter(KP_PIN,40), 0, 694, 0, 150);
+      parameter.KI = mapFloat(movingAverageFilter(KI_PIN,20), 0, 694, 0, 10) ;
+      parameter.KD = mapFloat(movingAverageFilter(KD_PIN,20), 0, 694, 0, 10);
+      parameter.DS = map(movingAverageFilter(DS_PIN,20), 0, 694, 25, 150);
     }
     else if (parsing.mode == 1)
     {
@@ -179,7 +226,8 @@ void loop()
       parameter.DS = parsing.DS;
     }
 
-    parameter.feedback = movingAverageFilter(TACHO_PIN, 200);
+    parameter.feedback = movingAverageFilter(TACHO_PIN, 600);
+    // parameter.feedback = filterLowPass(analogRead(TACHO_PIN));
 
     parameter.error = parameter.setPoint - parameter.feedback;
     parameter.totalError += parameter.error;
@@ -191,8 +239,8 @@ void loop()
 
     parameter.deltaError = parameter.error - parameter.lastError;
 
-    parameter.KPValue = parameter.KP * parameter.error;
-    parameter.KIValue = parameter.KI * parameter.totalError * loopPeriod;
+    parameter.KPValue = (parameter.KP / 100) * parameter.error;
+    parameter.KIValue = (parameter.KI / 100) * parameter.totalError * loopPeriod;
     parameter.KDValue = (parameter.KD / loopPeriod) * parameter.deltaError;
 
     parameter.controlSignal = parameter.KPValue + parameter.KIValue + parameter.KDValue;
@@ -225,13 +273,14 @@ void loop()
     O.replace('.', ',');
 
     Serial.println(
-        'S' + S +
-        'F' + F +
-        'P' + P +
-        'I' + I +
-        'D' + D +
-        'T' + T +
-        'O' + O);
+      'S' + S +
+      'F' + F +
+      'P' + P +
+      'I' + I +
+      'D' + D +
+      'T' + T +
+      'O' + O
+    );
 
 #else
 
@@ -255,15 +304,15 @@ void loop()
     lcd.setCursor(0, 1);
     lcd.print("PV:");
     lcd.print(parameter.feedback);
-    // lcd.setCursor(0,2);
-    // lcd.print("KP:");
-    // lcd.print(parameter.KP);
-    // lcd.setCursor(0,3);
-    // lcd.print("KI:");
-    // lcd.print(parameter.KI);
-    // lcd.setCursor(11,0);
-    // lcd.print("KD:");
-    // lcd.print(parameter.KD);
+    lcd.setCursor(0,2);
+    lcd.print("KP:");
+    lcd.print(parameter.KP);
+    lcd.setCursor(0,3);
+    lcd.print("KI:");
+    lcd.print(parameter.KI);
+    lcd.setCursor(11,0);
+    lcd.print("KD:");
+    lcd.print(parameter.KD);
     lcd.flush();
   }
 }
