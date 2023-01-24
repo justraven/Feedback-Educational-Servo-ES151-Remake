@@ -44,4 +44,4 @@ Struktur file pada projek ini ditunjukkan sebagai berikut :
 
   ## Pengembang
  - [priyovamr](https://github.com/priyovamr)
- - [justraven](https://github.com/justraven) Pengembang GUI dan Kode Mikrokontroller LabVIEW
+ - [justraven](https://github.com/justraven) Pengembang GUI dan Kode Mikrokontroller (LabVIEW)
