@@ -8,20 +8,20 @@ Struktur file pada projek ini ditunjukkan sebagai berikut :
 
 ```
 📦GUI  
- ┣ 📂GUI LabVIEW  				# folder untuk GUI LabVIEW ver.2021
- ┃ ┗ 📜GUI.vi  					# GUI LabVIEW ver. 2021 
- ┣ 📂GUI LabVIEW Legacy			# folder untuk GUI LabVIEW ver.2019
- ┗ 📂GUI Python  				# folder GUI Python
- ┃ ┣ 📜GUI_Kelompok1.py 		# GUI Python
+ ┣ 📂GUI LabVIEW  				          # folder untuk GUI LabVIEW ver.2021
+ ┃ ┗ 📜GUI.vi  					            # GUI LabVIEW ver. 2021 
+ ┣ 📂GUI LabVIEW Legacy			      # folder untuk GUI LabVIEW ver.2019
+ ┗ 📂GUI Python  				           # folder GUI Python
+ ┃ ┣ 📜GUI_Kelompok1.py 	      	# GUI Python
 📦Arduino code  
  ┣ 📂Arduino code for LabVIEW   #folder program mikrokontroller untuk GUI LabVIEW
- ┃ ┣ 📂lib  
- ┃ ┃ ┣ 📂parsing  				# folder untuk custom library
- ┃ ┃ ┃ ┗ 📜parsing.h  			# file library parsing
- ┃ ┣ 📂src  					#folder tempat file utama
- ┃ ┃ ┗ 📜main.cpp  				#file utama program
- ┃ ┗ 📜platformio.ini  			#file konfigurasi platformio
- ┗ 📂Arduino code for Python  	#folder mikrokontroller untuk GUI Python
+ ┃ ┣ 📂lib
+ ┃ ┃ ┣ 📂parsing  				          # folder untuk custom library
+ ┃ ┃ ┃ ┗ 📜parsing.h  			       # file library parsing
+ ┃ ┣ 📂src  					               #folder tempat file utama
+ ┃ ┃ ┗ 📜main.cpp  				         #file utama program
+ ┃ ┗ 📜platformio.ini  			      #file konfigurasi platformio
+ ┗ 📂Arduino code for Python  	 #folder mikrokontroller untuk GUI Python
  ┃ ┣ 📜Communication.ino  
  ┃ ┣ 📜Debug.ino  
  ┃ ┣ 📜encoder.ino  
