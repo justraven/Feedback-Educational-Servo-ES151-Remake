@@ -13,6 +13,7 @@ Struktur file pada projek ini ditunjukkan sebagai berikut :
  ┣ 📂GUI LabVIEW Legacy         # folder untuk GUI LabVIEW ver.2019
  ┗ 📂GUI Python                 # folder GUI Python
  ┃ ┣ 📜GUI_Kelompok1.py         # GUI Python
+ 
 📦Arduino code  
  ┣ 📂Arduino code for LabVIEW   #folder program mikrokontroller untuk GUI LabVIEW
  ┃ ┣ 📂lib
@@ -40,3 +41,7 @@ Struktur file pada projek ini ditunjukkan sebagai berikut :
  Untuk menjalankan GUI Python, diperlukan perangkat lunak sebagai berikut, 
  - Python
  - Arduino IDE
+
+  ## Pengembang
+ - [priyovamr](https://github.com/priyovamr)
+ - [justraven](https://github.com/justraven) Pengembang GUI dan Kode Mikrokontroller LabVIEW
