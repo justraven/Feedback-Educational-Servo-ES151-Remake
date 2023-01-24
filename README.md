@@ -8,9 +8,9 @@ Struktur file pada projek ini ditunjukkan sebagai berikut :
 
 ```
 📦GUI  
- ┣ 📂GUI LabVIEW ...............# folder untuk GUI LabVIEW ver.2021
- ┃ ┗ 📜GUI.vi ..................# GUI LabVIEW ver. 2021 
- ┣ 📂GUI LabVIEW Legacy			      # folder untuk GUI LabVIEW ver.2019
+ ┣ 📂GUI LabVIEW 															# folder untuk GUI LabVIEW ver.2021
+ ┃ ┗ 📜GUI.vi 																		# GUI LabVIEW ver. 2021 
+ ┣ 📂GUI LabVIEW Legacy 								# folder untuk GUI LabVIEW ver.2019
  ┗ 📂GUI Python  				           # folder GUI Python
  ┃ ┣ 📜GUI_Kelompok1.py 	      	# GUI Python
 📦Arduino code  
