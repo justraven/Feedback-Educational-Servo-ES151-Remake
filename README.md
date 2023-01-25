@@ -1,6 +1,5 @@
 # Feedback-Educational-Servo-ES151
 
-## Deskripsi Repo
 Repo ini berisi source code microcontroller dan GUI untuk projek kendali kecepatan dan posisi pada alat Feedback Educational Servo ES151.
 
 ## Struktur file
