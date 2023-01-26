@@ -15,14 +15,14 @@ Struktur file pada projek ini ditunjukkan sebagai berikut :
  ┃ ┣ 📜GUI_Kelompok1.py         # GUI Python
  
 📦Arduino code  
- ┣ 📂Arduino code for LabVIEW   #folder program mikrokontroller untuk GUI LabVIEW
+ ┣ 📂Arduino code for LabVIEW   # folder program mikrokontroller untuk GUI LabVIEW
  ┃ ┣ 📂lib
  ┃ ┃ ┣ 📂parsing                # folder untuk custom library
  ┃ ┃ ┃ ┗ 📜parsing.h            # file library parsing
- ┃ ┣ 📂src                      #folder tempat file utama
- ┃ ┃ ┗ 📜main.cpp               #file utama program
- ┃ ┗ 📜platformio.ini           #file konfigurasi platformio
- ┗ 📂Arduino code for Python    #folder mikrokontroller untuk GUI Python
+ ┃ ┣ 📂src                      # folder tempat file utama
+ ┃ ┃ ┗ 📜main.cpp               # file utama program
+ ┃ ┗ 📜platformio.ini           # file konfigurasi platformio
+ ┗ 📂Arduino code for Python    # folder mikrokontroller untuk GUI Python
  ┃ ┣ 📜Communication.ino  
  ┃ ┣ 📜Debug.ino  
  ┃ ┣ 📜encoder.ino  
