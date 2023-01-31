@@ -2,6 +2,8 @@
 
 Repo ini berisi source code microcontroller dan GUI untuk projek kendali kecepatan dan posisi pada alat Feedback Educational Servo ES151.
 
+Demo projek :
+
 [![](https://markdown-videos.deta.dev/youtube/0JrNFHsB_GM)](https://youtu.be/0JrNFHsB_GM)
 
 ## Struktur file
