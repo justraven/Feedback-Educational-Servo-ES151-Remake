@@ -1,5 +1,7 @@
 # Feedback Educational Servo ES151
 
+<img src="https://img.shields.io/badge/labview-%23FFDB00.svg?&style=for-the-badge&logo=labview&logoColor=black" /> <img src="https://img.shields.io/badge/arduino-%2300979D.svg?&style=for-the-badge&logo=arduino&logoColor=white" />  	<img src="https://img.shields.io/badge/python-%233776AB.svg?&style=for-the-badge&logo=python&logoColor=white" /> 
+
 Repo ini berisi source code microcontroller dan GUI untuk projek kendali kecepatan dan posisi pada alat Feedback Educational Servo ES151.
 
 Demo projek :
